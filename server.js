@@ -1,4 +1,5 @@
 const express = 'express';
+const helmet = require("helmet")
 
 const server = express();
 
@@ -19,6 +20,7 @@ function logger(req, res, next) {
 }
 
 server.use(logger)
+server.use(helmet)
 server.use(express.json())
 
 module.exports = server;
