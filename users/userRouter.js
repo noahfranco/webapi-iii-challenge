@@ -12,10 +12,10 @@ const router = express.Router();
 
 // .post() users 
 router.post('/', validateUser, (req, res) => {
-    const newUser = req.body; 
+    const users = req.body.users; 
 
     userDb 
-    .insert(newUser)
+    .insert(users)
     .then(person => {
         res.status(201).json(person); 
     })
@@ -42,10 +42,10 @@ router.post('/:id/posts', validateUserId, (req, res) => {
 
 // .get() users
 router.get('/', (req, res) => {
-    const display = req.body; 
+    const users = req.body.users; 
 
     userDb
-    .get(display)
+    .get(users)
     .then(users => {
         res.status(201).json(users)
     })
@@ -73,31 +73,39 @@ router.get('/:id', (req, res) => {
 
 // .get() blog post
 router.get('/:id/posts', (req, res) => {
-
+    
 });
 
 // .delete() deletes the users 
 router.delete('/:id', (req, res) => {
+    const { id } = req.params;  
 
+    userDb 
+    .remove(id)
+    .then(gone => {
+        res.status(201).json(gone)
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({error: "Something went wrong"})
+    })
 });
 
 // .put() updates the users 
 router.put('/:id', (req, res) => {
+const { id } = req.params; 
+const users = req.params.users; 
+
+userDb(id)
+.update(id, {users})
+.then(newUser => {
+    res.status(201).json(newUser)
+})
+.catch(error => {
+    console.log(error)
+    res.status(500).json({error: "Something when wrong"})
+})
 
 });
-
-//custom middleware
-
-function validateUserId(req, res, next) {
-
-};
-
-function validateUser(req, res, next) {
-
-};
-
-function validatePost(req, res, next) {
-
-};
 
 module.exports = router;
