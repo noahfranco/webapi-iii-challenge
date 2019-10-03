@@ -12,7 +12,7 @@ const router = express.Router();
 
 // .post() users 
 router.post('/', validateUser, (req, res) => {
-    const users = req.body.users; 
+    const users = req.body; 
 
     userDb 
     .insert(users)
@@ -42,7 +42,7 @@ router.post('/:id/posts', validateUserId, (req, res) => {
 
 // .get() users
 router.get('/', (req, res) => {
-    const users = req.body.users; 
+    const users = req.body.name; 
 
     userDb
     .get(users)
@@ -56,7 +56,7 @@ router.get('/', (req, res) => {
 });
 
 // .get() users with ID
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
     const { id } = req.params; 
 
     userDb
@@ -72,9 +72,20 @@ router.get('/:id', (req, res) => {
 });
 
 // .get() blog post
-router.get('/:id/posts', (req, res) => {
-    
+router.get('/:id/posts', validateUserId, (req, res) => {
+    const { id } = req.params; 
+
+    userDb
+    .getById(id)
+    .then(userID => {
+        res.status(201).json({userID})
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({error: "Something went wrong"})
+    })
 });
+
 
 // .delete() deletes the users 
 router.delete('/:id', (req, res) => {
@@ -92,9 +103,9 @@ router.delete('/:id', (req, res) => {
 });
 
 // .put() updates the users 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
 const { id } = req.params; 
-const users = req.params.users; 
+const users = req.body.name; 
 
 userDb(id)
 .update(id, {users})

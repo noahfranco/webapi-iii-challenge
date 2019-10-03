@@ -1,15 +1,15 @@
-function validatePost(req, res, next) {
-    const body = req.body;
-    const text = req.text;  
+function validateUserID(req, res, next) {
+    // const body = req.body;
+    // const text = req.text;  
 
-    if(!body) {
-        res.status(400).json({message: "missing post data"})
-    } 
-    if(!text) {
+    const { id } = req.params; 
+
+    if(!id) {
         res.status(400).json({message: "missing post data"})
     } else {
         next()
-    }
+    } 
+    
 }
 
-module.exports = validatePost; 
+module.exports = validateUserID; 
