@@ -42,10 +42,10 @@ router.post('/:id/posts', validateUserId, (req, res) => {
 
 // .get() users
 router.get('/', (req, res) => {
-    const users = req.body.name; 
+    // const users = req.body; 
 
     userDb
-    .get(users)
+    .get()
     .then(users => {
         res.status(201).json(users)
     })
@@ -78,7 +78,7 @@ router.get('/:id/posts', validateUserId, (req, res) => {
     userDb
     .getById(id)
     .then(userID => {
-        res.status(201).json({userID})
+        res.status(201).json(userID)
     })
     .catch(error => {
         console.log(error)
